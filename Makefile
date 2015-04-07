@@ -1,8 +1,8 @@
-TARGET := kick-off
-CXXFLAG := -Wno-write-strings -g -lm
+TARGET := run_parser
+CXXFLAG := -g -lm
 SCANNER := scanner.flex.cpp
 PARSER := parser.bison.cpp
-HANDLER := callbackHandler.hpp
+HANDLER := mainParser.hpp
 CLIENT := main.cpp
 
 $(TARGET): $(SCANNER) $(PARSER) $(CLIENT)
@@ -26,6 +26,7 @@ build:
 clean:
 	rm -f *.flex.cpp *.flex.hpp
 	rm -f *.bison.cpp *.bison.hpp
+	rm -fr *.dSYM
 	rm -f $(TARGET)
 
 .PHONY: clean flex bison build

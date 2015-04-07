@@ -1,10 +1,7 @@
 %{
 #include <string>
-#include "unionToken.hpp"
-
+#include "tokenValues.hpp"
 #include "parser.bison.hpp"
-#define YY_BREAK
-#define ECHO
 %}
 
 %option reentrant bison-bridge
@@ -27,8 +24,8 @@ Word		({Alpha}|{DecDigit})+
 }
 
 {Word} {
-	yylval->StringType() = new std::string(yytext);
-	printf("Word: %s\n", yylval->token_value.string_value->c_str());
+	yylval->token.string_value = new std::string(yytext);
+	printf("Word: %s\n", yylval->token.string_value->c_str());
 }
 
 {Space}+ {

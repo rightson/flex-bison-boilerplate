@@ -1,9 +1,9 @@
-#include "callbackHandler.hpp"
+#include "mainParser.hpp"
 
 int main(int argc, char const *argv[])
 {
-    callbackHandler cb;
-    FILE* fp = fopen("example.txt","r");
-    yy_run_parser(cb, fp);
+    mainParser parser;
+    FILE* fp = fopen("input.txt","r");
+    yy_run_parser(parser, fp);
     return 0;
 }
