@@ -45,15 +45,15 @@ void yyerror(mainParser &parser, yyscan_t yyscanner, const char * msg) {
     printf("Line %d: %s\n", yyget_lineno(yyscanner), msg);
 }
 
-void yy_run_parser(mainParser &parser, FILE *fp) {
+void yy_file_parser(mainParser &parser, FILE *fp) {
     yyscan_t yyscanner;
     if (yylex_init(&yyscanner)) {
         printf("Failed to initialize scanner\n");
         return;
     }
     yyset_in(fp, yyscanner);
-    printf("yy_run_parser started\n");
+    printf("yy_file_parser started\n");
     yyparse(parser, yyscanner);
-    printf("yy_run_parser stopped\n");
+    printf("yy_file_parser stopped\n");
     yylex_destroy(yyscanner);
 }

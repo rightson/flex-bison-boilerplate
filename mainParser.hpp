@@ -6,4 +6,4 @@ class mainParser {
         const int sub(const int a, const int b) { return a-b; }
 };
 
-extern void yy_run_parser(mainParser &parser, FILE *fp);
+extern void yy_file_parser(mainParser &parser, FILE *fp);
