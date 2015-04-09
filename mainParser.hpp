@@ -1,3 +1,4 @@
+#include <string>
 #include <stdio.h>
 
 class mainParser {
@@ -7,3 +8,4 @@ class mainParser {
 };
 
 extern void yy_file_parser(mainParser &parser, FILE *fp);
+extern void yy_string_parser(mainParser &parser, const std::string &buffer);

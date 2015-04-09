@@ -1,15 +1,8 @@
 %{
 #include "tokenValues.hpp"
 #include "mainParser.hpp"
+#include "scanner.flex.hpp"
 
-typedef tokenValues YYSTYPE;
-typedef void* yyscan_t;
-int yylex(YYSTYPE *lvalp, yyscan_t yyscanner);
-int yylex_init(yyscan_t* yyscanner);
-int yyset_in(FILE *fp, yyscan_t yyscanner);
-int yylex_destroy(yyscan_t yyscanner);
-void yylex_setin(FILE* fp, yyscan_t yyscanner);
-int yyget_lineno(yyscan_t yyscanner);
 void yyerror(mainParser &parser, yyscan_t yyscanner, const char * msg);
 %}
 
@@ -55,5 +48,22 @@ void yy_file_parser(mainParser &parser, FILE *fp) {
     printf("yy_file_parser started\n");
     yyparse(parser, yyscanner);
     printf("yy_file_parser stopped\n");
+    yylex_destroy(yyscanner);
+}
+
+void yy_string_parser(mainParser &parser, const std::string &buffer) {
+    yyscan_t yyscanner;
+    if (yylex_init(&yyscanner)) {
+        printf("Failed to initialize scanner\n");
+        return;
+    }
+    YY_BUFFER_STATE bp;
+    printf("yy_string_parser started\n");
+    bp = yy_scan_string(buffer.c_str(), yyscanner);
+    yy_switch_to_buffer(bp, yyscanner);
+    yyparse(parser, yyscanner);
+    yy_flush_buffer(bp, yyscanner);
+    yy_delete_buffer(bp, yyscanner);
+    printf("yy_string_parser stopped\n");
     yylex_destroy(yyscanner);
 }
