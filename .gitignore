@@ -1,3 +1,4 @@
 *.bison.*
 *.flex.*
-run_parser*
+application*
+*.dSYM

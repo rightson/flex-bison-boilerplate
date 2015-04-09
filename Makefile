@@ -1,4 +1,4 @@
-TARGET := run_parser
+TARGET := application
 CXXFLAG := -g -lm
 SCANNER := scanner.flex.cpp
 PARSER := parser.bison.cpp

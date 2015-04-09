@@ -1,13 +1,12 @@
 #include <string>
 
 class tokenValues {
-	public:
-		union {
-			std::string 	*string_value;
-			int				integer_value;
-			double 			double_value;
-			bool			bool_value;
-		} token;
+    public:
+        std::string     *String;
+        char            *Character;
+        int             Integer;
+        double          Floating;
+        bool            Boolean;
 };
 
 typedef tokenValues YYSTYPE;

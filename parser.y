@@ -2,6 +2,7 @@
 #include "tokenValues.hpp"
 #include "mainParser.hpp"
 
+typedef tokenValues YYSTYPE;
 typedef void* yyscan_t;
 int yylex(YYSTYPE *lvalp, yyscan_t yyscanner);
 int yylex_init(yyscan_t* yyscanner);
@@ -19,33 +20,40 @@ void yyerror(mainParser &parser, yyscan_t yyscanner, const char * msg);
 %parse-param { yyscan_t yyscanner }
 %lex-param { yyscan_t yyscanner }
 
-
-%token <token.string_value> STRING
-%token EOL
-
-%token ERROR
+%token <Integer> INTEGER
+%token LQUOTE
+%token RQUOTE
+%left ADD SUB
+%left MUL DIV
+%left COMMA DOT
+%token ENDL
 
 %%
 
-root:
-	| STRING EOL	{ printf("=> root STRING EOL\n")}
-	;
+calc        :
+            |   calc expression ENDL        { printf("=> calc expression ENDL \n")}
+            ;
+
+expression  :   INTEGER                     { printf(" -> INTEGER %d\n", $1); }
+            |   expression ADD expression   { printf(" -> expression ADD expression %d\n", parser.add($1.Integer, $3.Integer)); }
+            |   expression SUB expression   { printf(" -> expression / expression %d\n", parser.sub($1.Integer, $3.Integer)); }
+            ;
 
 %%
 
 void yyerror(mainParser &parser, yyscan_t yyscanner, const char * msg) {
-	printf("Line %d: %s\n", yyget_lineno(yyscanner), msg);
+    printf("Line %d: %s\n", yyget_lineno(yyscanner), msg);
 }
 
 void yy_run_parser(mainParser &parser, FILE *fp) {
-	yyscan_t yyscanner;
-	if (yylex_init(&yyscanner)) {
-		printf("Failed to initialize scanner\n");
-		return;
-	}
-	yyset_in(fp, yyscanner);
-	printf("yy_run_parser started\n");
-	yyparse(parser, yyscanner);
-	printf("yy_run_parser stopped\n");
-	yylex_destroy(yyscanner);
+    yyscan_t yyscanner;
+    if (yylex_init(&yyscanner)) {
+        printf("Failed to initialize scanner\n");
+        return;
+    }
+    yyset_in(fp, yyscanner);
+    printf("yy_run_parser started\n");
+    yyparse(parser, yyscanner);
+    printf("yy_run_parser stopped\n");
+    yylex_destroy(yyscanner);
 }

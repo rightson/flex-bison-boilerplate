@@ -11,29 +11,34 @@
 %x COMMENT
 %x QSTRING
 
-Space 		[\r\b\t\n ]
-Alpha		[[:alpha:]]
-DecDigit    [[:digit:]]
-Word		({Alpha}|{DecDigit})+
+Digit       [0-9]
+Integer     [-+]?{Digit}+
+Floating    [-+]?{Digit}+\.{Digit}*
+Alphabet    [_a-zA-Z]
+Letter      [_a-zA-Z{Digit}]
 
 %%
 
-
-"/*" {
-	BEGIN COMMENT;
+<INITIAL>"+" {
+    return ADD;
 }
 
-{Word} {
-	yylval->token.string_value = new std::string(yytext);
-	printf("Word: %s\n", yylval->token.string_value->c_str());
+<INITIAL>"-" {
+    return SUB;
 }
 
-{Space}+ {
-	break;
+<INITIAL>{Integer} {
+    yylval->Integer = atoi(yytext);
+    printf("found token %d\n", atoi(yytext));
+    return INTEGER;
 }
 
-. {
-	return ERROR;
+<INITIAL>[\n|\r] {
+    return ENDL;
+}
+
+<INITIAL>. {
+    yylval->Character = yytext;
 }
 
 %%
